@@ -1,0 +1,12 @@
+package com.redhat.business.automation.adapter.test.rules;
+
+
+import com.redhat.business.automation.test.domain.model.Input;
+import com.redhat.business.automation.test.domain.model.Output;
+
+rule "Count Input and Create Output"
+    when
+        accumulate( Input(); $count : count() )
+    then
+        insert( new Output( $count ) );
+end

@@ -1,0 +1,7 @@
+<kmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.drools.org/xsd/kmodule">
+
+    <kbase name="test-rules-stateless-kbase" default="true" packages="com.redhat.business.automation.adapter.test.rules">
+        <ksession name="test-rules-stateless-ksession" default="true" type="stateless" />
+    </kbase>
+
+</kmodule>
