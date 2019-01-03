@@ -1,5 +1,6 @@
 package com.redhat.business.automation.adapter.rules.api;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +8,11 @@ public class RulesExecutionResponse {
 
     private RulesExecutionRequestStatus status;
     private String statusMessage;
-    private Map<String, Object> output = new HashMap<String, Object>();
+    private Map<String, Collection<Object>> output = new HashMap<>();
+
+    public Collection<Object> getQueryOutput( String queryName ) {
+        return this.output.get( queryName );
+    }
 
     public RulesExecutionRequestStatus getStatus() {
         return this.status;
@@ -25,11 +30,11 @@ public class RulesExecutionResponse {
         this.statusMessage = statusMessage;
     }
 
-    public Map<String, Object> getOutput() {
+    public Map<String, Collection<Object>> getOutput() {
         return output;
     }
 
-    public void setOutput( Map<String, Object> output ) {
+    public void setOutput( Map<String, Collection<Object>> output ) {
         this.output = output;
     }
 

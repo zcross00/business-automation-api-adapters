@@ -2,55 +2,45 @@ package com.redhat.business.automation.adapter.rules.api;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
-
-import com.google.common.base.Strings;
+import java.util.Set;
 
 public class RulesExecutionRequest {
 
-    private GroupArtifactVersion groupArtifactVersion;
-    private String ksession;
-    private String processId;
-    private Collection<InternalRuleIO> facts;
+    private final GroupArtifactVersion groupArtifactVersion;
+    private final String ksession;
+    private final String processId;
+    private final List<Object> facts;
+    private final Set<QueryDescriptor> queries;
 
     private RulesExecutionRequest( Builder builder ) {
         this.ksession = builder.getKsession();
-        this.facts = builder.getFacts();
         this.groupArtifactVersion = builder.getGav();
         this.processId = builder.getProcessId();
+        this.facts = builder.getFacts();
+        this.queries = builder.getQueries();
     }
 
     public GroupArtifactVersion getGav() {
         return groupArtifactVersion;
     }
 
-    public void setGroupArtifactVersion( GroupArtifactVersion groupArtifactVersion ) {
-        this.groupArtifactVersion = groupArtifactVersion;
-    }
-
     public String getKsession() {
-        return ksession;
-    }
-
-    public void setKsession( String ksession ) {
-        this.ksession = ksession;
+        return this.ksession;
     }
 
     public String getProcessId() {
-        return processId;
+        return this.processId;
     }
 
-    public void setProcessId( String processId ) {
-        this.processId = processId;
+    public Set<QueryDescriptor> getQueries() {
+        return this.queries;
     }
 
-    public Collection<InternalRuleIO> getFacts() {
-        return facts;
-    }
-
-    public void setFacts( Collection<InternalRuleIO> facts ) {
-        this.facts = facts;
+    public List<Object> getFacts() {
+        return this.facts;
     }
 
     public static class Builder {
@@ -58,8 +48,8 @@ public class RulesExecutionRequest {
         private GroupArtifactVersion gav;
         private String ksession;
         private String processId;
-
-        private Collection<InternalRuleIO> facts = new ArrayList<InternalRuleIO>();
+        private List<Object> facts = new ArrayList<>();
+        private Set<QueryDescriptor> queries = new HashSet<QueryDescriptor>();
 
         private boolean useGav = false;
 
@@ -85,48 +75,44 @@ public class RulesExecutionRequest {
             return this;
         }
 
-        public Builder addInOutFact( String identifier, Object fact ) {
-            if ( Strings.isNullOrEmpty( identifier ) ) {
-                throw new IllegalArgumentException( "Identifier for InOut Fact " + fact + " is null or blank" );
+        public Builder addFact( Object fact ) {
+            this.facts.add( fact );
+            return this;
+        }
+
+        public Builder addFacts( Collection<Object> facts ) {
+            this.facts.addAll( facts );
+            return this;
+        }
+
+        public Builder addQuery( String queryName, String outputId ) {
+            Optional<QueryDescriptor> query = queries.stream().filter( q -> q.getName().equals( queryName ) ).findFirst();
+            if ( !query.isPresent() ) {
+                this.queries.add( new QueryDescriptor( queryName, outputId ) );
             } else {
-                facts.add( new InternalRuleIO( identifier, fact ) );
+                throw new IllegalArgumentException( "A query with name \"" + queryName + "\" has alreadye been registered" );
             }
-
             return this;
         }
 
-        public Builder addInOnlyFacts( Collection<?> facts ) {
-            facts.stream().forEach( fact -> {
-                this.facts.add( new InternalRuleIO( fact ) );
-            } );
-
-            return this;
-        }
-
-        public Builder addInOnlyFact( Object fact ) {
-            facts.add( new InternalRuleIO( fact ) );
-            return this;
-        }
-
-        public Builder addOutOnlyFact( String identifier, Class<?> clazz ) {
-            facts.add( new InternalRuleIO( identifier, clazz ) );
-            return this;
+        public GroupArtifactVersion getGav() {
+            return gav;
         }
 
         public String getKsession() {
             return ksession;
         }
 
-        public GroupArtifactVersion getGav() {
-            return this.gav;
-        }
-
         public String getProcessId() {
             return processId;
         }
 
-        public Collection<InternalRuleIO> getFacts() {
+        public List<Object> getFacts() {
             return facts;
+        }
+
+        public Set<QueryDescriptor> getQueries() {
+            return queries;
         }
 
         public RulesExecutionRequest build() {

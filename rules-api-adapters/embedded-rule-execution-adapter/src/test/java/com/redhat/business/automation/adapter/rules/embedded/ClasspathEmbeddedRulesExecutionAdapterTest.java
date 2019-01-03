@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,20 +18,20 @@ import com.redhat.business.automation.adapter.rules.api.RulesExecutionResponse;
 import com.redhat.business.automation.test.domain.model.Input;
 import com.redhat.business.automation.test.domain.model.Output;
 
-@DisplayName( "Embedded Rules Adapter Unit Tests" )
-public class EmbeddedRulesExecutionAdapterTest {
+@DisplayName( "Embedded Classpath Rules Adapter Unit Tests" )
+public class ClasspathEmbeddedRulesExecutionAdapterTest {
 
-    private RulesExecutionAdapter adapter = new EmbeddedRulesExecutionAdapter();
+    private RulesExecutionAdapter adapter = new ClasspathEmbeddedRulesExecutionAdapter();
 
     @Test
-    @DisplayName( "Rules loaded via classpath with embedded engine" )
-    public void shouldSuccessfullExecuteClasspathRules() {
+    @DisplayName( "Embedded Classpath rule execution with a single query" )
+    public void shouldSuccessfullyExecuteRulesAndGetOutputFromOneQuery() {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
                                                                  .ksession( "test-rules-stateless-ksession" )
-                                                                 .addInOnlyFact( new Input( "Input 1" ) )
-                                                                 .addOutOnlyFact( "output", Output.class )
+                                                                 .addFact( new Input( "Input 1" ) )
+                                                                 .addQuery( "Get Output", "$output" )
                                                                  .build();
         
         RulesExecutionResponse response = adapter.executeStatelessRules( request );
@@ -42,19 +43,22 @@ public class EmbeddedRulesExecutionAdapterTest {
         List<Output> expectedOutput = new ArrayList<>();
         expectedOutput.add( new Output( 1L ) );
 
-        assertIterableEquals( expectedOutput, (List<?>) response.getOutput().get( "output" ) );
+        assertIterableEquals( expectedOutput, response.getQueryOutput( "Get Output" ) );
+        assertEquals( response.getStatusMessage(), "Rules execution successful" );
     }
 
     @Test
-    @DisplayName( "Rules successfully loaded dynamically from Kjar and executed with embedded engine" )
-    public void shouldSuccessfullExecuteDynamicallyLoadedRules() {
+    @DisplayName( "Embedded Classpath rule execution with multiple query results" )
+    public void shouldSuccessfullyExecuteRulesAndGetOutputFromMultipleQueries() {
+
+        Collection<Object> facts = Arrays.asList( new Input( "Input 1" ), new Input( "Input 2" ) );
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.1-SNAPSHOT" )
                                                                  .ksession( "test-rules-stateless-ksession" )
-                                                                 .addInOnlyFact( new Input( "Input 1" ) )
-                                                                 .addOutOnlyFact( "output", Output.class )
+                                                                 .addFacts( facts )
+                                                                 .addQuery( "Get Output", "$output" )
+                                                                 .addQuery( "Get Inputs", "$input" )
                                                                  .build();
         
         RulesExecutionResponse response = adapter.executeStatelessRules( request );
@@ -64,21 +68,22 @@ public class EmbeddedRulesExecutionAdapterTest {
         assertEquals( RulesExecutionRequestStatus.SUCCESS, response.getStatus() );
 
         List<Output> expectedOutput = new ArrayList<>();
-        expectedOutput.add( new Output( 1L ) );
+        expectedOutput.add( new Output( 2L ) );
 
-        assertIterableEquals( expectedOutput, (List<?>) response.getOutput().get( "output" ) );
+        assertIterableEquals( expectedOutput, response.getQueryOutput( "Get Output" ) );
+        assertIterableEquals( facts, response.getQueryOutput( "Get Inputs" ) );
+        assertEquals( response.getStatusMessage(), "Rules execution successful" );
     }
 
     @Test
-    @DisplayName( "Rule artifact is not resolved dynamically results in FAILURE response from embedded engine" )
-    public void shouldGetErrorForMissingKJarArtifact() {
+    @DisplayName( "Embedded Classpath rule execution fails because Query doesn't exist" )
+    public void shouldHaveFailureResponseBecauseQueryDoesNotExist() {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "does", "not", "exist" )
                                                                  .ksession( "test-rules-stateless-ksession" )
-                                                                 .addInOnlyFact( new Input( "Input 1" ) )
-                                                                 .addOutOnlyFact( "output", Output.class )
+                                                                 .addFact( new Input( "Input 1" ) )
+                                                                 .addQuery( "XXX", "$output" )
                                                                  .build();
         
         RulesExecutionResponse response = adapter.executeStatelessRules( request );
@@ -86,5 +91,6 @@ public class EmbeddedRulesExecutionAdapterTest {
         //@formatter:on
 
         assertEquals( RulesExecutionRequestStatus.FAILURE, response.getStatus() );
+        assertEquals( "Query 'XXX' does not exist", response.getStatusMessage() );
     }
 }
