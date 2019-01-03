@@ -8,4 +8,8 @@ public class RulesExecutionException extends Exception {
         super( message, cause );
     }
 
+    public RulesExecutionException( String message ) {
+        super( message );
+    }
+
 }

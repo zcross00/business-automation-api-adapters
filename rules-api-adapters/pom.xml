@@ -14,6 +14,7 @@
     <modules>
         <module>rules-execution-adapter-api</module>
         <module>embedded-rule-execution-adapter</module>
+        <module>decision-server-rules-adapter</module>
     </modules>
 
     

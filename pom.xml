@@ -10,11 +10,32 @@
 
     <properties>
         <java.version>1.8</java.version>
-
         <kie.platform.version>7.7.0.Final-redhat-10</kie.platform.version>
-
         <junit.version>5.3.2</junit.version>
+
+        <!-- <junit.test.group.include>unit</junit.test.group.include> -->
     </properties>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <junit.test.group.exclude>integration</junit.test.group.exclude>
+            </properties>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <junit.test.group.exclude></junit.test.group.exclude>
+            </properties>
+        </profile>
+    </profiles>
 
     <modules>
         <module>rules-api-adapters</module>
@@ -57,6 +78,11 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
+                <configuration>
+                    <properties>
+                        <excludeTags>${junit.test.group.exclude}</excludeTags>
+                    </properties>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>

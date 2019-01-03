@@ -7,7 +7,7 @@ import java.util.Map;
 public class RulesExecutionResponse {
 
     private RulesExecutionRequestStatus status;
-    private String statusMessage;
+    private String message;
     private Map<String, Collection<Object>> output = new HashMap<>();
 
     public Collection<Object> getQueryOutput( String queryName ) {
@@ -22,12 +22,12 @@ public class RulesExecutionResponse {
         this.status = status;
     }
 
-    public String getStatusMessage() {
-        return statusMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setStatusMessage( String statusMessage ) {
-        this.statusMessage = statusMessage;
+    public void setMessage( String message ) {
+        this.message = message;
     }
 
     public Map<String, Collection<Object>> getOutput() {
@@ -40,6 +40,6 @@ public class RulesExecutionResponse {
 
     @Override
     public String toString() {
-        return "RulesResponse [status=" + status + ", statusMessage=" + statusMessage + ", output=" + output + "]";
+        return "RulesResponse [status=" + status + ", statusMessage=" + message + ", output=" + output + "]";
     }
 }

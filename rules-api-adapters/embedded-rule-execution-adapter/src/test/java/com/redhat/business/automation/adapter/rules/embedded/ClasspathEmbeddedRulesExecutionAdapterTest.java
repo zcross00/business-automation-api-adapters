@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.redhat.business.automation.adapter.rules.api.RulesExecutionAdapter;
@@ -18,6 +19,8 @@ import com.redhat.business.automation.adapter.rules.api.RulesExecutionResponse;
 import com.redhat.business.automation.test.domain.model.Input;
 import com.redhat.business.automation.test.domain.model.Output;
 
+@Tag( "unit" )
+@Tag( "embedded" )
 @DisplayName( "Embedded Classpath Rules Adapter Unit Tests" )
 public class ClasspathEmbeddedRulesExecutionAdapterTest {
 
@@ -44,7 +47,7 @@ public class ClasspathEmbeddedRulesExecutionAdapterTest {
         expectedOutput.add( new Output( 1L ) );
 
         assertIterableEquals( expectedOutput, response.getQueryOutput( "Get Output" ) );
-        assertEquals( response.getStatusMessage(), "Rules execution successful" );
+        assertEquals( response.getMessage(), "Rules execution successful" );
     }
 
     @Test
@@ -72,7 +75,7 @@ public class ClasspathEmbeddedRulesExecutionAdapterTest {
 
         assertIterableEquals( expectedOutput, response.getQueryOutput( "Get Output" ) );
         assertIterableEquals( facts, response.getQueryOutput( "Get Inputs" ) );
-        assertEquals( response.getStatusMessage(), "Rules execution successful" );
+        assertEquals( response.getMessage(), "Rules execution successful" );
     }
 
     @Test
@@ -91,6 +94,6 @@ public class ClasspathEmbeddedRulesExecutionAdapterTest {
         //@formatter:on
 
         assertEquals( RulesExecutionRequestStatus.FAILURE, response.getStatus() );
-        assertEquals( "Query 'XXX' does not exist", response.getStatusMessage() );
+        assertEquals( "Query 'XXX' does not exist", response.getMessage() );
     }
 }

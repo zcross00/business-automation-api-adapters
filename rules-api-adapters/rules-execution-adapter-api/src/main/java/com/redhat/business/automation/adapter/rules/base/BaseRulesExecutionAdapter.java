@@ -53,14 +53,14 @@ public abstract class BaseRulesExecutionAdapter implements RulesExecutionAdapter
             Map<String, Collection<Object>> queryOutput = processQueryResults( results, request.getQueries() );
             response.setOutput( queryOutput );
             response.setStatus( RulesExecutionRequestStatus.SUCCESS );
-            response.setStatusMessage( "Rules execution successful" );
+            response.setMessage( "Rules execution successful" );
 
         } catch ( RulesExecutionException e ) {
             LOG.error( "Error executing stateless rules execution request - " + e.getMessage() );
             if ( e.getCause() != null ) {
                 LOG.error( "Root cause was : " + e.getCause().getClass() + " - " + e.getCause().getMessage() );
             }
-            response.setStatusMessage( e.getMessage() );
+            response.setMessage( e.getMessage() );
             response.setStatus( RulesExecutionRequestStatus.FAILURE );
         }
         return response;
