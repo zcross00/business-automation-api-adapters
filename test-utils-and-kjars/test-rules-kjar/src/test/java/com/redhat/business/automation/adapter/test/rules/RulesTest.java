@@ -1,4 +1,4 @@
-package com.redhat.business.automation.test.rules;
+package com.redhat.business.automation.adapter.test.rules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

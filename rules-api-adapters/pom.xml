@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.redhat.business.automation</groupId>
         <artifactId>business-automation-api-adapters</artifactId>
@@ -10,12 +11,12 @@
     <artifactId>rules-api-adapters</artifactId>
 
     <packaging>pom</packaging>
-    
+
     <modules>
         <module>rules-execution-adapter-api</module>
-        <module>embedded-rule-execution-adapter</module>
-        <module>decision-server-rules-adapter</module>
+        <module>embedded-rules-execution-adapters</module>
+        <module>decision-server-rules-adapters</module>
     </modules>
 
-    
+
 </project>
