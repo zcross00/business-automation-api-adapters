@@ -95,13 +95,5 @@
     </build>
 
     <distributionManagement>
-        
-        <!-- TODO @michael remove this it's a quick hack to get this into the NAPS repo -->
-        <repository>
-            <id>team.nexus.releases</id>
-            <name>NAPS Cajun Navy Team Nexus</name>
-            <url>https://nexus-nexus.apps.753d.openshift.opentlc.com/nexus/</url>
-        </repository>
-    </distributionManagement>
 
 </project>
