@@ -48,7 +48,7 @@ public class DecisionServerRulesExecutionAdapterTest {
 
     private static final String GROUP = "com.redhat.business.automation";
     private static final String ARTIFACT = "test-rules-kjar";
-    private static final String VERSION = "0.0.2.Beta";
+    private static final String VERSION = "0.0.3.Beta";
 
     private static final String URL = System.getProperty( "kie.server.url" ) != null ? System.getProperty( "kie.server.url" ) : "http://localhost:8080/kie-server/services/rest/server";
     private static final String USERNAME = System.getProperty( "kie.server.username" ) != null ? System.getProperty( "kie.server.username" ) : "kie";
@@ -92,7 +92,7 @@ public class DecisionServerRulesExecutionAdapterTest {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.2.Beta" )
+                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.3.Beta" )
                                                                  .ksession( "test-rules-stateless-ksession" )
                                                                  .addFact( new Input( "Input 1" ) )
                                                                  .addQuery( "Get Output", "$output" )
@@ -119,7 +119,7 @@ public class DecisionServerRulesExecutionAdapterTest {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.2.Beta" )
+                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.3.Beta" )
                                                                  .ksession( "test-rules-stateless-ksession" )
                                                                  .addFacts( facts )
                                                                  .addQuery( "Get Output", "$output" )
@@ -146,7 +146,7 @@ public class DecisionServerRulesExecutionAdapterTest {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.2.Beta" )
+                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.3.Beta" )
                                                                  .ksession( "test-rules-stateless-ksession" )
                                                                  .addFact( new Input( "Input 1" ) )
                                                                  .addQuery( "XXX", "$output" )
