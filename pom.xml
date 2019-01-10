@@ -4,7 +4,7 @@
 
     <groupId>com.redhat.business.automation</groupId>
     <artifactId>business-automation-api-adapters</artifactId>
-    <version>0.0.1.Beta</version>
+    <version>0.0.2.Beta</version>
 
     <packaging>pom</packaging>
 

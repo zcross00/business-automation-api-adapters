@@ -32,7 +32,7 @@ public class KieScannerEmbeddedRulesExecutionAdapterTest {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.1.Beta" )
+                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.2.Beta" )
                                                                  .ksession( "test-rules-stateless-ksession" )
                                                                  .addFact( new Input( "Input 1" ) )
                                                                  .addQuery( "Get Output", "$output" )
@@ -59,7 +59,7 @@ public class KieScannerEmbeddedRulesExecutionAdapterTest {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.1.Beta" )
+                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.2.Beta" )
                                                                  .ksession( "test-rules-stateless-ksession" )
                                                                  .addFacts( facts )
                                                                  .addQuery( "Get Output", "$output" )
@@ -86,7 +86,7 @@ public class KieScannerEmbeddedRulesExecutionAdapterTest {
 
         //@formatter:off
         RulesExecutionRequest request = new RulesExecutionRequest.Builder()
-                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.1.Beta" )
+                                                                 .useGAV( "com.redhat.business.automation", "test-rules-kjar", "0.0.2.Beta" )
                                                                  .ksession( "test-rules-stateless-ksession" )
                                                                  .addFact( new Input( "Input 1" ) )
                                                                  .addQuery( "XXX", "$output" )
