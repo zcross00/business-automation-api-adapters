@@ -96,7 +96,7 @@
 
     <distributionManagement>
         
-        <!-- TODO -- @michael remove this it's a quick hack to get this into the NAPS repo -->
+        <!-- TODO @michael remove this it's a quick hack to get this into the NAPS repo -->
         <repository>
             <id>team.nexus.releases</id>
             <name>NAPS Cajun Navy Team Nexus</name>
