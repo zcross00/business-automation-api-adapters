@@ -42,6 +42,7 @@
         <module>process-api-adapters</module>
         <module>planner-api-adapters</module>
         <module>test-utils-and-kjars</module>
+        <module>adapter-commons</module>
     </modules>
 
     <dependencyManagement>

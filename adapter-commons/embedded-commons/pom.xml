@@ -1,14 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.redhat.business.automation</groupId>
-        <artifactId>rules-api-adapters</artifactId>
+        <artifactId>adapter-commons</artifactId>
         <version>0.0.3.Beta</version>
     </parent>
 
-    <artifactId>embedded-rules-execution-adapters</artifactId>
+    <artifactId>embedded-commons</artifactId>
 
     <dependencies>
 
@@ -16,23 +15,6 @@
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>rules-execution-adapter-api</artifactId>
             <version>0.0.3.Beta</version>
-        </dependency>
-        <dependency>
-            <groupId>com.redhat.business.automation</groupId>
-            <artifactId>embedded-commons</artifactId>
-            <version>0.0.3.Beta</version>
-        </dependency>
-        <dependency>
-            <groupId>com.redhat.business.automation</groupId>
-            <artifactId>test-rules-kjar</artifactId>
-            <version>0.0.3.Beta</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.redhat.business.automation</groupId>
-            <artifactId>test-domain-model</artifactId>
-            <version>0.0.3.Beta</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -64,12 +46,5 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 </project>

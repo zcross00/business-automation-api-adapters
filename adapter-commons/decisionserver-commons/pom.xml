@@ -4,11 +4,11 @@
 
     <parent>
         <groupId>com.redhat.business.automation</groupId>
-        <artifactId>rules-api-adapters</artifactId>
+        <artifactId>adapter-commons</artifactId>
         <version>0.0.3.Beta</version>
     </parent>
 
-    <artifactId>decision-server-rule-execution-adapters</artifactId>
+    <artifactId>decisionserver-commons</artifactId>
 
     <dependencies>
 
@@ -17,12 +17,6 @@
             <artifactId>rules-execution-adapter-api</artifactId>
             <version>0.0.3.Beta</version>
         </dependency>
-        <dependency>
-            <groupId>com.redhat.business.automation</groupId>
-            <artifactId>decisionserver-commons</artifactId>
-            <version>0.0.3.Beta</version>
-        </dependency>
-
         <dependency>
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>test-domain-model</artifactId>
@@ -40,10 +34,6 @@
             <groupId>org.kie.server</groupId>
             <artifactId>kie-server-client</artifactId>
         </dependency>
-
-        <!-- <dependency> <groupId>org.kie</groupId> <artifactId>kie-api</artifactId> </dependency> <dependency> <groupId>org.kie</groupId> <artifactId>kie-internal</artifactId> 
-            </dependency> <dependency> <groupId>org.kie</groupId> <artifactId>kie-ci</artifactId> </dependency> <dependency> <groupId>org.drools</groupId> <artifactId>drools-core</artifactId> 
-            </dependency> <dependency> <groupId>org.drools</groupId> <artifactId>drools-compiler</artifactId> </dependency> -->
 
         <dependency>
             <groupId>org.slf4j</groupId>

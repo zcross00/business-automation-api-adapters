@@ -16,22 +16,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.kie.server.api.exception.KieServicesHttpException;
 import org.kie.server.api.marshalling.MarshallingFormat;
-import org.kie.server.api.model.KieContainerResource;
-import org.kie.server.api.model.KieContainerResourceFilter;
-import org.kie.server.api.model.KieContainerResourceList;
-import org.kie.server.api.model.KieContainerStatus;
-import org.kie.server.api.model.KieServiceResponse.ResponseType;
-import org.kie.server.api.model.ReleaseId;
-import org.kie.server.api.model.ServiceResponse;
-import org.kie.server.client.KieServicesClient;
-import org.kie.server.client.KieServicesConfiguration;
-import org.kie.server.client.KieServicesFactory;
-import org.kie.server.common.rest.NoEndpointFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+import com.redhat.business.automation.adapter.decisionserver.common.DecisionServerClient;
+import com.redhat.business.automation.adapter.decisionserver.common.DecisionServerClientException;
+import com.redhat.business.automation.adapter.decisionserver.common.DecisionServerClientType;
+import com.redhat.business.automation.adapter.rules.api.GroupArtifactVersion;
 import com.redhat.business.automation.adapter.rules.api.RulesExecutionAdapter;
 import com.redhat.business.automation.adapter.rules.api.RulesExecutionRequest;
 import com.redhat.business.automation.adapter.rules.api.RulesExecutionRequestStatus;
@@ -53,41 +46,30 @@ public class DecisionServerRulesExecutionAdapterTest {
     private static final String URL = System.getProperty( "kie.server.url" ) != null ? System.getProperty( "kie.server.url" ) : "http://localhost:8080/kie-server/services/rest/server";
     private static final String USERNAME = System.getProperty( "kie.server.username" ) != null ? System.getProperty( "kie.server.username" ) : "kie";
     private static final String PASSWORD = System.getProperty( "kie.server.password" ) != null ? System.getProperty( "kie.server.password" ) : "kie";
-
     private static final long TIMEOUT = System.getProperty( "kie.server.timeout" ) != null ? Long.parseLong( System.getProperty( "kie.server.timeout" ) ) : 10000l;
+    private static final String TEST_MODEL_PACKAGE = "com.redhat.business.automation.test.domain.model";
+
+    private DecisionServerClient decisionServerClient = null;
 
     private RulesExecutionAdapter adapter = null;
 
     @BeforeEach
-    public void setup() {
-
-        // this tests whether or not we can connect to the KIE Server
-        KieServicesClient testKieServicesClient = connectKieServicesClient();
-
-        if ( testKieServicesClient != null ) {
-            ensureTestKieContainerIsDeployed( testKieServicesClient );
-        } else {
-            LOG.error( String.format( "Cannot connect to kie server : url=%s : username=%s", URL, USERNAME ) );
-            fail( "Cannot connect to Decision Server @ " + URL );
-        }
-
-        DecisionServerRulesExecutionAdapter dsAdapter = new DecisionServerRulesExecutionAdapter();
-        dsAdapter.setUrl( URL );
-        dsAdapter.setUsername( USERNAME );
-        dsAdapter.setPassword( PASSWORD );
-        dsAdapter.setUseSSL( false );
-        dsAdapter.setTimeout( TIMEOUT );
-
+    public void setup() throws Exception {
         Set<String> modelPackages = new HashSet<>();
-        modelPackages.add( "com.redhat.business.automation.test.domain.model" );
-        dsAdapter.setModelPackages( modelPackages );
+        modelPackages.add( TEST_MODEL_PACKAGE );
+
+        this.decisionServerClient = new DecisionServerClient( URL, USERNAME, PASSWORD, false, TIMEOUT, modelPackages, DecisionServerClientType.REST, MarshallingFormat.XSTREAM );
+        this.decisionServerClient.init();
+
+        DecisionServerRulesExecutionAdapter dsAdapter = new DecisionServerRulesExecutionAdapter( decisionServerClient );
+
+        ensureTestKieContainerIsDeployed();
 
         adapter = dsAdapter;
-
     }
 
     @Test
-    @DisplayName( "Embedded Kie Scanner rule execution with a single query" )
+    @DisplayName( "Decision Server rule execution with a single query" )
     public void shouldSuccessfullyExecuteRulesAndGetOutputFromOneQuery() {
 
         //@formatter:off
@@ -112,7 +94,7 @@ public class DecisionServerRulesExecutionAdapterTest {
     }
 
     @Test
-    @DisplayName( "Embedded Kie Scanner rule execution with multiple query results" )
+    @DisplayName( "Decision Server rule execution with multiple query results" )
     public void shouldSuccessfullyExecuteRulesAndGetOutputFromMultipleQueries() {
 
         Collection<Object> facts = Arrays.asList( new Input( "Input 1" ), new Input( "Input 2" ) );
@@ -141,7 +123,7 @@ public class DecisionServerRulesExecutionAdapterTest {
     }
 
     @Test
-    @DisplayName( "Embedded Kie Scanner rule execution fails because Query doesn't exist" )
+    @DisplayName( "Decision Server rule execution fails because Query doesn't exist" )
     public void shouldHaveFailureResponseBecauseQueryDoesNotExist() {
 
         //@formatter:off
@@ -179,39 +161,14 @@ public class DecisionServerRulesExecutionAdapterTest {
         assertEquals( RulesExecutionRequestStatus.FAILURE, response.getStatus() );
     }
 
-    private void ensureTestKieContainerIsDeployed( KieServicesClient testKieServicesClient ) {
-        KieContainerResourceFilter filter = new KieContainerResourceFilter.Builder().status( KieContainerStatus.STARTED ).build();
-        KieContainerResourceList kcontainers = testKieServicesClient.listContainers( filter ).getResult();
-        if ( kcontainers.getContainers().size() == 0 ) {
-            String.format( "Test KIE Container %s : %s : %s was not found. Deploying it now", GROUP, ARTIFACT, VERSION );
-            String id = GROUP + ":" + ARTIFACT + ":" + VERSION;
-            KieContainerResource kcontainer = new KieContainerResource( id, new ReleaseId( GROUP, ARTIFACT, VERSION ) );
-            ServiceResponse<KieContainerResource> response = testKieServicesClient.createContainer( id, kcontainer );
-            if ( response.getType() != ResponseType.SUCCESS ) {
-                fail( "Unable to deploy the test KIE Container" );
-            }
-        }
-
-    }
-
-    private KieServicesClient connectKieServicesClient() {
-        KieServicesConfiguration config = KieServicesFactory.newRestConfiguration( URL, USERNAME, PASSWORD );
-        KieServicesClient kieServicesClient = null;
-
-        config.setMarshallingFormat( MarshallingFormat.XSTREAM );
-        config.setUseSsl( false );
-        config.setTimeout( TIMEOUT );
-
+    private void ensureTestKieContainerIsDeployed() {
         try {
-            kieServicesClient = KieServicesFactory.newKieServicesClient( config );
-        } catch ( NoEndpointFoundException e ) {
-            LOG.error( "No Decision Server endpoint available at : " + URL );
-        } catch ( KieServicesHttpException e ) {
-            LOG.error( "Decision Server endpoint is available @ " + URL + ", however, there is a problem connecting to the endpoint." );
-            if ( e.getMessage().contains( "Unauthorized" ) ) {
-                LOG.error( "There appears to be an issue with the credentials used to connect to Decision Server" );
+            String containerId = decisionServerClient.getContainerId( new GroupArtifactVersion( GROUP, ARTIFACT, VERSION ) );
+            if ( Strings.isNullOrEmpty( containerId ) ) {
+                decisionServerClient.deployContainer( GROUP, ARTIFACT, VERSION );
             }
+        } catch ( DecisionServerClientException e ) {
+            fail( e.getMessage() );
         }
-        return kieServicesClient;
     }
 }
