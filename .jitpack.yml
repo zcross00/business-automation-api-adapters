@@ -1,4 +1,0 @@
-jdk:
-  - openjdk9
-install:
-   - mvn clean install -s conf/settings.xml
