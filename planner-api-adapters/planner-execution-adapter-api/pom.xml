@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.redhat.business.automation</groupId>
     <artifactId>planner-api-adapters</artifactId>
-    <version>0.0.3.Beta</version>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>planner-execution-adapter-api</artifactId>
 </project>

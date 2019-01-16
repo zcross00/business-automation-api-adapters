@@ -8,6 +8,7 @@
     </appender>
 
     <logger name="org.drools" level="INFO" />
+    <logger name="org.eclipse.aether" level="FATAL" />
 
     <root level="INFO">
         <appender-ref ref="consoleAppender" />

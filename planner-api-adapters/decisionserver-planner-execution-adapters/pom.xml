@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.redhat.business.automation</groupId>
         <artifactId>planner-api-adapters</artifactId>
-        <version>0.0.3.Beta</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>decisionserver-planner-execution-adapters</artifactId>
 
@@ -12,7 +12,7 @@
         <dependency>
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>rules-execution-adapter-api</artifactId>
-            <version>0.0.3.Beta</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

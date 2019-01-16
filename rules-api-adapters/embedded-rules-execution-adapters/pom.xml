@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.redhat.business.automation</groupId>
         <artifactId>rules-api-adapters</artifactId>
-        <version>0.0.3.Beta</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>embedded-rules-execution-adapters</artifactId>
@@ -15,23 +15,23 @@
         <dependency>
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>rules-execution-adapter-api</artifactId>
-            <version>0.0.3.Beta</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>embedded-commons</artifactId>
-            <version>0.0.3.Beta</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>test-rules-kjar</artifactId>
-            <version>0.0.3.Beta</version>
+            <version>0.0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.redhat.business.automation</groupId>
             <artifactId>test-domain-model</artifactId>
-            <version>0.0.3.Beta</version>
+            <version>0.0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 
