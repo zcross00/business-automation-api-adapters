@@ -10,11 +10,3 @@ rule "Count Input and Create Output"
     then
         insert( new Output( $count ) );
 end
-
-query "Get Output"
-	$output : Output()
-end
-
-query "Get Inputs"
-	$input : Input()
-end
