@@ -1,0 +1,8 @@
+<kmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.drools.org/xsd/kmodule">
+
+    <kbase name="test-planner-kbase"
+        packages="com.redhat.business.automation.adapter.test.planner,com.redhat.business.automation.adapter.test.queries">
+        <ksession name="test-rules-stateless-ksession" type="stateless" />
+    </kbase>
+
+</kmodule>

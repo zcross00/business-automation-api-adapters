@@ -1,0 +1,12 @@
+package com.redhat.business.automation.adapter.test.queries;
+
+import com.redhat.business.automation.test.domain.model.Input;
+import com.redhat.business.automation.test.domain.model.Output;
+
+query "Get Output"
+	$output : Output()
+end
+
+query "Get Inputs"
+	$input : Input()
+end
