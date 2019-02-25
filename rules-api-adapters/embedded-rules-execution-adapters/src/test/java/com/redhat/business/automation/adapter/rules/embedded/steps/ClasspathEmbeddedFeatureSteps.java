@@ -1,7 +1,7 @@
 package com.redhat.business.automation.adapter.rules.embedded.steps;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,8 +59,10 @@ public class ClasspathEmbeddedFeatureSteps {
         assertEquals( response.getStatus(), RulesExecutionRequestStatus.valueOf(status));
 		
         if(RulesExecutionRequestStatus.valueOf(status).equals(RulesExecutionRequestStatus.SUCCESS)) {
-        	assertIterableEquals( expectedOutput, response.getQueryOutput( "Get Output" ) );
-        	assertIterableEquals( facts, response.getQueryOutput( "Get Inputs" ) );
+        	assertTrue(Arrays.equals(expectedOutput.toArray(), response.getQueryOutput( "Get Output" ).toArray()));
+        	assertTrue(Arrays.equals(facts.toArray(), response.getQueryOutput( "Get Inputs" ).toArray()));
+        	//assertIterableEquals( expectedOutput, response.getQueryOutput( "Get Output" ) );
+        	//assertIterableEquals( facts, response.getQueryOutput( "Get Inputs" ) );
         }
 	}
 
